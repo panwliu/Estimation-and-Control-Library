@@ -1,0 +1,62 @@
+This section derives the equation of motion of the cartpole system in the following two ways: (1) standard vector analysis; (2) using Lagrangian.
+
+\subsection{Standard vector analysis}
+
+The position of the cart is given as
+\begin{equation}
+    \mathbf{r}_1=x\mathbf{E}_x
+\end{equation}
+Computing the 1st and 2nd order rate of change of $\mathbf{r}_1$ in reference frame $\mathcal{F}_i$, we obtain the velocity and acceleration as
+\begin{align}
+    \mathbf{v}_1 &= ^{\mathcal{F}_i}\frac{d}{dt}(\mathbf{r}_1)=\dot{x}\mathbf{E}_x \\
+    \mathbf{a}_1 &= ^{\mathcal{F}_i}\frac{d}{dt}(\mathbf{v}_1)=\ddot{x}\mathbf{E}_x
+\end{align}
+
+
+The position of the pole is given as
+\begin{equation}
+    \mathbf{r}_2=x\mathbf{E}_x + l\mathbf{e}_r
+\end{equation}
+Similarly, the velocity and acceleration of the pole can be computed as
+\begin{align}
+    \mathbf{v}_2 &= ^{\mathcal{F}_i}\frac{d}{dt}(\mathbf{r}_2) = \dot{x}\mathbf{E}_x + l\dot{\theta}\mathbf{e}_\theta\times\mathbf{e}_r=\dot{x}\mathbf{E}_x-l\dot{\theta}\mathbf{e}_z\\
+    \mathbf{a}_2 &= ^{\mathcal{F}_i}\frac{d}{dt}(\mathbf{v}_2) = \ddot{x}\mathbf{E}_x -l\ddot{\theta}\mathbf{e}_z-l\dot{\theta}^2\mathbf{e}_r
+\end{align}
+Rewriten $\mathbf{a}_2$ in $\mathbf{E}_x$ and $\mathbf{E}_z$ as
+\begin{equation}
+    \mathbf{a}_2 = (\ddot{x} + l\ddot{\theta}\cos\theta - l\dot{\theta}^2\sin\theta)\mathbf{E}_x - (l\ddot{\theta}\sin\theta+l\dot{\theta}^2\cos\theta)\mathbf{E}_z
+\end{equation}
+
+Applying Netwon 2nd law on the $\mathbf{E}_x$-direciton of the cart and pole, we have
+\begin{align}
+    F - T_x &= m_1\ddot{x}\\
+    T_x &= m_2(\ddot{x} + l\ddot{\theta}\cos\theta - l\dot{\theta}^2\sin\theta)
+\end{align}
+Adding the above two euqations we get the first equation,
+\begin{equation}
+    F = (m_1+m_2)\ddot{x} + m_2(l\ddot{\theta}\cos\theta - l\dot{\theta}^2\sin\theta)
+\end{equation}
+
+The cartpole system is consisted of two systems, i.e. the cart and the pole. The internal force can be canceled out by analyzing the two systems as a whole. A simplier way is to apply the balance of angular momemtun relative to the cart.
+\begin{equation}
+    \frac{d}{dt}\mathbf{H}_c = \mathbf{M}_c - (\mathbf{r}_2-\mathbf{r}_1)\times m_2\mathbf{a}_1
+\end{equation}
+where $\mathbf{H}_c$ is the angular momemtun of the cartpole system relative to the cart.
+\begin{equation}
+    \mathbf{H}_c = (\mathbf{r}_2-\mathbf{r}_1) \times m_2(\mathbf{v}_2 - \mathbf{v}_1) = m_2l^2\dot{\theta}\mathbf{E}_y
+\end{equation}
+And $\mathbf{M}_c$ is the moment relative to the cart.
+\begin{align}
+    \mathbf{M}_c = (\mathbf{r}_2-\mathbf{r}_1) \times (-m_2g)\mathbf{E}_z = m_2gl\sin\theta\mathbf{E}_y\\
+    (\mathbf{r}_2-\mathbf{r}_1)\times m_2\mathbf{a}_1 = l\mathbf{e}_r \times m_2\ddot{x}\mathbf{E}_x
+\end{align}
+Thus, we get the second equation
+\begin{equation}
+    \cos\theta\ddot{x} + l\ddot{\theta} = -g\sin\theta
+\end{equation}
+
+In summary, the equation of motion is
+\begin{align}
+    F = (m_1+m_2)\ddot{x} + m_2(l\ddot{\theta}\cos\theta - l\dot{\theta}^2\sin\theta)\\
+    \cos\theta\ddot{x} + l\ddot{\theta} = -g\sin\theta
+\end{align}

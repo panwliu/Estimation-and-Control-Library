@@ -1,0 +1,241 @@
+% LaTeX style file of simplified commands for math & figure utilities
+% By Daning Huang
+% v0.12 20140314
+
+%% ----- PACKAGE REQUIREMENT ---------------------------------------------------
+\usepackage[english]{babel}
+\RequirePackage{amsmath}
+%\RequirePackage{amsthm}
+\RequirePackage{amsfonts}
+\RequirePackage{amssymb}
+\RequirePackage{etoolbox}
+\RequirePackage{float}
+\RequirePackage{graphicx}
+\RequirePackage[amssymb,cdot]{SIunits}
+\RequirePackage{xcolor}
+\RequirePackage{listings}
+\RequirePackage{subfigure}
+
+%% ----- MATH COMMANDS ---------------------------------------------------------
+\newcommand{\dd}{\mathrm{d}}
+% d#/d#
+\newcommand{\ddf}[2]{\frac{\dd #1}{\dd #2}}
+\newcommand{\ddfb}[2]{\frac{\dd^2#1}{\dd #2^2}}
+\newcommand{\ddfn}[3]{\frac{\dd^#3#1}{\dd #2^#3}}
+% p#/p#
+\newcommand{\ppf}[2]{\frac{\partial#1}{\partial#2}}
+\newcommand{\ppfb}[2]{\frac{\partial^2#1}{\partial#2^2}}
+\newcommand{\ppfn}[3]{\frac{\partial^#3#1}{\partial#2^#3}}
+\newcommand{\ppfs}[6]{\frac{\partial^{#2}#1}{\partial#3^{#4}\partial#5^{#6}}}
+% d#/dt
+\newcommand{\ddt}[1]{\frac{\dd #1}{\dd t}}
+\newcommand{\ddtb}[1]{\frac{\dd^2#1}{\dd t^2}}
+\newcommand{\ddtn}[2]{\frac{\dd^#2#1}{\dd t^#2}}
+% p#/pt
+\newcommand{\ppt}[1]{\frac{\partial#1}{\partial t}}
+\newcommand{\pptb}[1]{\frac{\partial^2#1}{\partial t^2}}
+\newcommand{\pptn}[2]{\frac{\partial^#2#1}{\partial t^#2}}
+
+\newcommand{\norm}[1]{\lVert#1\rVert}
+\newcommand{\abs}[1]{\lvert#1\rvert}
+\newcommand{\diag}{\mathrm{Diag}}
+
+\newcommand{\vat}[1]{\rvert_{#1}}
+\newcommand{\re}[1]{\mathrm{Re}(#1)}
+\newcommand{\im}[1]{\mathrm{Im}(#1)}
+
+\newcommand{\half}{\frac{1}{2}}
+
+%% ----- PHYSIC COMMANDS -------------------------------------------------------
+\newcommand{\ee}[1]{\times 10^{#1}}
+
+\newcommand{\dalpha}{\dot\alpha}
+\newcommand{\cla}{{C_{L\alpha}}}
+\newcommand{\cma}{{C_{M\alpha}}}
+\newcommand{\cmad}{{C_{M\dalpha}}}
+\newcommand{\cmac}{{C_{Mac}}}
+\newcommand{\dyq}{\frac{1}{2}\rho v^2}
+
+\newcommand{\xcg}{x_{c.g.}}
+\newcommand{\xea}{x_{e.a.}}
+\newcommand{\xac}{x_{a.c.}}
+
+%% ----- UNIT COMMANDS ---------------------------------------------------------
+% Length
+\newcommand{\km}{\kilo\meter}
+\newcommand{\m}{\meter}
+\newcommand{\cm}{\centi\meter}
+\newcommand{\mm}{\milli\meter}
+\newcommand{\inch}{\mathrm{in}}
+\newcommand{\ft}{\mathrm{ft}}
+
+% Time
+\newcommand{\h}{\hour}
+\newcommand{\mn}{\minute}
+\newcommand{\s}{\second}
+\newcommand{\ms}{\milli\second}
+\newcommand{\us}{\micro\second}
+\newcommand{\ns}{\nano\second}
+
+% Frequency
+\newcommand{\GHz}{\giga\hertz}
+\newcommand{\MHz}{\mega\hertz}
+\newcommand{\kHz}{\kilo\hertz}
+\newcommand{\Hz}{\hertz}
+
+% Velocity
+\newcommand{\mps}{\m/\s}
+\newcommand{\mph}{\mathrm{mph}}
+
+% Mass
+\newcommand{\kg}{\kilo\gram}
+\newcommand{\lb}{\mathrm{lb}}
+
+% Energy & Power
+\newcommand{\J}{\joule}
+\newcommand{\Whr}{\watt{hr}}
+\newcommand{\kWh}{\kilo\watt\hour}
+\newcommand{\W}{\watt}
+\newcommand{\mW}{\milli\watt}
+
+% Angle
+\newcommand{\dg}{\degree}
+\newcommand{\rd}{\mathrm{rad}}
+
+% Temperature
+\newcommand{\dgc}{\celsius}
+\newcommand{\dgf}{\dg F}
+\newcommand{\dgk}{K}
+
+% Pressure
+\newcommand{\pa}{\pascal}
+\newcommand{\kpa}{\kilo\pa}
+\newcommand{\mpa}{\mega\pa}
+\newcommand{\gpa}{\giga\pa}
+\newcommand{\atm}{\mathrm{Atm}}
+
+% Area & Volume
+\newcommand{\msq}{\m^2}
+\newcommand{\mcu}{\m^3}
+\newcommand{\ftsq}{\ft^2}
+\newcommand{\ftcu}{\ft^3}
+\newcommand{\insq}{\inch^2}
+\newcommand{\incu}{\inch^3}
+
+% Density
+\newcommand{\kgpmsq}{\kg/\msq}
+\newcommand{\kgpmcu}{\kg/\mcu}
+\newcommand{\lbpftsq}{\lb/\ftsq}
+\newcommand{\lbpftcu}{\lb/\ftcu}
+
+% Force
+\newcommand{\N}{\newton}
+
+%% ----- TEXT COMMANDS ---------------------------------------------------------
+\newcommand{\etal}{\textit{et al.}}
+\newcommand{\eg}{\textit{e.g.}}
+\newcommand{\ie}{\textit{i.e.}}
+\newcommand{\etc}{\textit{etc.}}
+\newcommand{\vs}{\mathrm{\,v.s.\,}}
+
+% Short space
+%\newcommand{\sspace}{\hspace{0.18em}}
+
+%% ----- GRAPHIC COMMANDS ------------------------------------------------------
+\graphicspath{{./}{./pics/}}
+\DeclareGraphicsExtensions{.jpg,.png,.pdf,.eps}
+
+\newcommand\insertfig[3]{
+\begin{figure}[H]
+\centering
+\includegraphics[width=#2\textwidth]{#1}
+\caption{#3}\label{#1}
+\end{figure}
+}
+
+\newcommand\insertfigfloat[3]{
+\begin{figure}
+\centering
+\includegraphics[width=#2\textwidth]{#1}
+\caption{#3}\label{#1}
+\end{figure}
+}
+
+
+\newcommand\insertfigr[3]{
+\begin{minipage}[t]{#2\linewidth}
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{#1}
+\caption{#3}\label{#1}
+\end{figure}
+\end{minipage}
+}
+
+\newcommand\insertfigs[3]{
+\subfigure[\label{#1}#3]{\includegraphics[width=#2\linewidth]{#1}}
+}
+
+\newcommand\insertfigspancol[3]{
+\begin{figure*}
+\centering
+\includegraphics[width=#2\textwidth]{#1}
+\caption{#3}\label{#1}
+\end{figure*}
+}
+
+\newcommand\insertfigdouble[2]{
+\begin{figure*}
+\centering
+\includegraphics[width=\textwidth]{#1}
+\caption{#2}\label{#1}
+\end{figure*}
+}
+%% ----- LISTINGS --------------------------------------------------------------
+\newcommand{\insertcode}[2]{
+\ifstrequal{#1}{Mathematica}{%
+\lstset{basicstyle={\ttfamily\footnotesize},
+  language=Mathematica,
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  numbersep=5pt,
+  commentstyle=\color{gray},
+  breaklines=true,
+  captionpos={t},
+  frame={lines},
+  rulecolor=\color{black},
+  framerule=0.5pt,
+  columns=flexible,
+  tabsize=2
+}}{}%
+\ifstrequal{#1}{Matlab}{%
+\lstset{basicstyle={\ttfamily\footnotesize},
+  language=Matlab,
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  numbersep=5pt,
+  breaklines=true,
+  captionpos={t},
+  frame={lines},
+  rulecolor=\color{black},
+  framerule=0.5pt,
+  columns=flexible,
+  tabsize=2
+}}{}%
+\ifstrequal{#1}{Python}{%
+\lstset{basicstyle={\ttfamily\footnotesize},
+  language=Python,
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  numbersep=5pt,
+  breaklines=true,
+  captionpos={t},
+  frame={lines},
+  rulecolor=\color{black},
+  framerule=0.5pt,
+  columns=flexible,
+  tabsize=2,
+  showtabs=true
+}}{}%
+\lstinputlisting{#2}
+}
