@@ -48,15 +48,96 @@ where $\mathbf{H}_c$ is the angular momemtun of the cartpole system relative to 
 And $\mathbf{M}_c$ is the moment relative to the cart.
 \begin{align}
     \mathbf{M}_c = (\mathbf{r}_2-\mathbf{r}_1) \times (-m_2g)\mathbf{E}_z = m_2gl\sin\theta\mathbf{E}_y\\
-    (\mathbf{r}_2-\mathbf{r}_1)\times m_2\mathbf{a}_1 = l\mathbf{e}_r \times m_2\ddot{x}\mathbf{E}_x
+    (\mathbf{r}_2-\mathbf{r}_1)\times m_2\mathbf{a}_1 = l\mathbf{e}_r \times m_2\ddot{x}\mathbf{E}_x = m_2l\ddot{x}\cos\theta\mathbf{E}_y
 \end{align}
 Thus, we get the second equation
 \begin{equation}
-    \cos\theta\ddot{x} + l\ddot{\theta} = -g\sin\theta
+    \cos\theta\ddot{x} + l\ddot{\theta} = g\sin\theta
 \end{equation}
 
 In summary, the equation of motion is
 \begin{align}
-    F = (m_1+m_2)\ddot{x} + m_2(l\ddot{\theta}\cos\theta - l\dot{\theta}^2\sin\theta)\\
-    \cos\theta\ddot{x} + l\ddot{\theta} = -g\sin\theta
+    (m_1+m_2)\ddot{x} + m_2(l\ddot{\theta}\cos\theta - l\dot{\theta}^2\sin\theta) = F\\
+    \cos\theta\ddot{x} + l\ddot{\theta} = g\sin\theta
 \end{align}
+
+
+\subsection{Linearization}
+Assuming $\mathbf{q}=[x,\theta]^T$, the equations of motion of the cartpole system can be written in the standard form as
+\begin{equation}
+    \mathbf{H}(\mathbf{q})\ddot{\mathbf{q}} + \mathbf{C}(\mathbf{q},\mathbf{\dot{q}})\mathbf{\dot{q}} + \mathbf{G}(\mathbf{q}) = \mathbf{B}\mathbf{u}
+\end{equation}
+where $\mathbf{q}=[x,\theta]^T$ is a $n$-vector called the \textit{generalized coordinates vector}, $\mathbf{H}(\mathbf{q})$ is a $n \times n$ nonsingular symmetric positive-deﬁnite matrix called the \textit{mass matrix}, $\mathbf{C}(\mathbf{q},\mathbf{\dot{q}})$ is a $n \times n$ matrix called the \textit{centrifugal/Coriolis/friction matrix}, $\mathbf{G}(\mathbf{q})$ is a $n$-vector sometimes called the \textit{conservative forces vector}. \textbf{This equation of motion is valid for systems that follow classical Newton-Euler mechanics or Lagrangian mechanics} with a kinetic energy that is quadratic in the derivative of the generalized coordinates and a potential energy that may depend on the generalized coordinates, but not on its derivative. Such systems include robot arms, mobile robots, airplanes, helicopters,underwatervehicles,hovercraft,etc. 
+\begin{equation}
+\begin{split}
+    \mathbf{H}(\mathbf{q}) &= \left[ \begin{array}{cc}
+        m_1+m_2 & m_2l\cos\theta \\ 
+        \cos\theta & l \\ 
+        \end{array} \right], 
+    \mathbf{C}(\mathbf{q},\mathbf{\dot{q}}) = \left[ \begin{array}{cc} 
+        0 & -m_2l\dot{\theta}\sin\theta \\ 
+        0 & 0 \\ 
+        \end{array} \right], \\
+    \mathbf{G}(\mathbf{q}) &= \left[ \begin{array}{c}
+        0 \\ 
+        -g\sin\theta \\ 
+        \end{array} \right],
+    \mathbf{B} = \left[ \begin{array}{c}
+        1 \\ 
+        0 \\ 
+        \end{array} \right],
+\end{split}
+\end{equation}
+
+Let $x_1=\mathbf{q}$, $x_2=\mathbf{\dot{q}}$, and $x=[x_1,x_2]^T$. Then we have the \textbf{standard form for linearization}, i.e. $\dot{x}=f(x,u)$
+\begin{equation}
+    \dot{x} = \left[ \begin{array}{c}
+        x_2 \\ 
+        \mathbf{H}(\mathbf{q})^{-1}(-\mathbf{C}(\mathbf{q},\mathbf{\dot{q}})\mathbf{\dot{q}} - \mathbf{G}(\mathbf{q}) + \mathbf{B}\mathbf{u}) \\ 
+        \end{array} \right]
+\end{equation}
+
+Linearize around the equlibrium point $x^\ast=0$,
+\begin{equation}
+    \dot{x} = Ax + Bu
+\end{equation}
+where
+\begin{align}
+    A &= \left[ \begin{array}{cc}
+        \mathbf{0} & \mathbf{I} \\ 
+        -\mathbf{H}(\mathbf{q})^{-1}\frac{\partial}{\partial\mathbf{q}}\mathbf{G}(\mathbf{q}) & -\mathbf{H}(\mathbf{q})^{-1}\mathbf{C}(\mathbf{q},\mathbf{\dot{q}}) \\ 
+        \end{array} \right], \\
+        B &= \left[ \begin{array}{c}
+            0 \\ 
+            \mathbf{H}^{-1}\mathbf{B} 
+            \end{array} \right]
+\end{align}
+Note that the term involving $\frac{\partial}{\partial\mathbf{q}}\mathbf{H}(\mathbf{q})^{-1}$ disappears because $\mathbf{C}(\mathbf{q},\mathbf{\dot{q}})\mathbf{\dot{q}} - \mathbf{G}(\mathbf{q}) + \mathbf{B}\mathbf{u}$ must be zero at the fixed point. Many of the $\mathbf{C}(\mathbf{q},\mathbf{\dot{q}})\mathbf{\dot{q}}$ derivatives drop out, too, because $\mathbf{\dot{q}}^\ast = 0$. The $-\mathbf{H}(\mathbf{q})^{-1}$ can be calculated by Matlab symbolic inversion,
+\begin{equation}
+    \mathbf{H}(\mathbf{q})^{-1} = \left[ \begin{array}{cc}
+        \frac{1}{m_1+m_2-m_2\cos^2\theta} & \frac{-m_2\cos\theta}{m_1+m_2-m_2\cos^2\theta} \\ 
+        \frac{-\cos\theta}{m_1l+m_2l-m_2l\cos^2\theta} & \frac{m_1+m_2}{m_1+m_2-m_2\cos^2\theta} \\ 
+        \end{array} \right]
+\end{equation}
+and
+\begin{equation}
+    \frac{\partial}{\partial\mathbf{q}}\mathbf{G}(\mathbf{q}) = \left[ \begin{array}{cc}
+        0 & 0 \\ 
+        0 & -g\cos\theta \\ 
+        \end{array} \right]
+\end{equation}
+
+Substitute  $x^\ast=0$ and rearrange $x$ to be $x=[x,\dot{x},\theta,\dot{\theta}]$, we have
+\begin{equation}
+    A = \left[ \begin{array}{cccc}
+        0 & 1 & 0 & 0 \\ 
+        0 & 0 & -\frac{m_2}{m_1}g & 0 \\ 
+        0 & 0 & 0 & 1 \\
+        0 & 0 & \frac{m_1+m_2}{m_1l}g & 0 
+        \end{array} \right], B = \left[ \begin{array}{c}
+            0 \\ 
+            1/m \\
+            0 \\
+            -1/(m_1l)
+            \end{array} \right]
+\end{equation}
