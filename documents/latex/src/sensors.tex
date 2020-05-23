@@ -1,0 +1,82 @@
+This section describes comonly used sensors in robotics area, including LiDAR and IMU.
+
+\subsection{LiDAR}
+LiDAR is used as an acronym of "light detection and ranging" or "laser imaging, detection, and ranging".
+
+\textbf{LiDAR operating principles}: Measuring distance with time-of-flight using three components: a laser, a photodetector, and a very precise stopwatch.
+\begin{equation}
+    d = \frac{1}{2} ct
+\end{equation}
+where $c$ is speed of light. Since light travels much faster than cars, it's a good approximation to think of the LIDAR and the target as being effectively stationary during the few nanoseconds that it takes for all of this to happen. It is worth noting that the intensity information of the return pulse is can also be useful. It provides some extra information about the geometry of the environment and the material the beam is reflecting off of.  it turns out that it's possible to create 2D images from LIDAR intensity data that you can then use the same computer vision algorithms you'll learn about in the next course. \underline{2D and 3D} build a rotating mirror into the LIDAR that directs the emitted pulses along different directions. add an up and down nodding motion to the mirror along with the rotation, you can use the same principle to create a scan in 3D.
+
+\textbf{LiDAR measuring model in 2D and 3D}
+LiDAR sensor gives $[r,\alpha,\epsilon]^T$, which are distance, azimuth (heading) and elevation angle. They can be convert to the Euler coordinate as (inverse sensor model)
+\begin{equation}
+    \left[ \begin{array}{c}
+        x \\
+        y  \\ 
+        z\end{array} \right] = h^{-1}(r,\alpha,\epsilon)=
+        \left[ \begin{array}{c}
+            r\cos\alpha\cos\epsilon \\
+            r\sin\alpha\cos\epsilon  \\ 
+            r\sin\epsilon \end{array} \right]
+\end{equation}
+And the forward sensor model is
+\begin{equation}
+    \left[ \begin{array}{c}
+        r \\
+        \alpha  \\ 
+        \epsilon\end{array} \right] = h(x,y,z)=
+        \left[ \begin{array}{c}
+            \sqrt{x^2+y^2+z^2} \\
+            \arctan\frac{y}{x}  \\ 
+            \arcsin\frac{z}{r} \end{array} \right]
+\end{equation}
+For 2D model, $z=0$ and $\epsilon=0$.
+
+\textbf{Sources of measurement noise}
+\begin{itemize}
+    \item uncertainty in the exact time of arrival of the reflected signal
+    \item uncertainty in the exact orientation of the mirror in 2D and 3D LIDARs
+    \item interaction with the target surface which can degrade the return signal
+\end{itemize}
+These factors are commonly accounted for by assuming additive zero-mean Gaussian noise $v\sim \mathcal{N}(0, \Sigma)$.
+
+\textbf{LiDAR point clouds}
+All points of LiDAR are stacked horizontally as $p = [p_1, p_2, ..., p_n]$, where $p_\ast=[x,y,z]^T$. \underline{translation, rotation and scaling} in SE(3)
+\begin{equation}
+    g = \left[ \begin{array}{cc}
+        R & p \\
+        0 & 1
+        \end{array} \right]
+\end{equation}
+
+\textbf{Find road with 3D plane fitting}
+the plane model is $z=ax+by+c$, least square fitting is
+\begin{equation}
+    \left[ \begin{array}{c}
+        z_1 \\
+        z_2 \\
+        ...
+        \end{array} \right] = 
+        \left[ \begin{array}{ccc}
+            x_1 & y_1 & 1\\
+            x_2 & y_2 & 1\\
+            ... & ..  & ..
+            \end{array} \right] \left[ \begin{array}{c}
+                a \\
+                b \\
+                c
+                \end{array} \right]
+\end{equation}
+\underline{point cloud library} for c++
+
+\textbf{State estimation via point set registration}
+\underline{Problem description} The point set registration problems says, given 2 point clouds in two different coordinate frames, and with the knowledge that they correspond to or contain the same object in the world, how shall we align them to determine how the sensor must have moved between the two scans? More specifically, we want to figure out the \underline{optimal translation and the optimal rotation} between the two sensor reference frames that minimizes the distance between the 2 point clouds.
+
+The problem is that, in general we don't know which points correspond to each other. The most popular algorithm for solving this kind of problem is called the Iterative Closest Point algorithm or ICP for short. 
+
+\underline{References}:
+\begin{itemize}
+    \item State Estimation and Localization for Self-Driving Cars, Module 4 LiDAR Sensing. (https://www.coursera.org/learn/state-estimation-localization-self-driving-cars)
+\end{itemize}
