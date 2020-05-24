@@ -16,7 +16,7 @@
 
 #include <ignition/transport/Node.hh>
 
-namespace gym_gazebo {
+namespace ecl {
 
 class GazeboCartpole:
     public ignition::gazebo::System,
@@ -38,25 +38,24 @@ class GazeboCartpole:
         void CommandTopicCB(const ignition::msgs::Float_V &_msg);
 
     private:
-        //ignition::gazebo::Link cart_link{{kNullEntity}};
-
-        int n_model_;
         std::string model_name_;
-        std::string link_name_cart_;
-        std::string link_name_pole_;
+        std::string cart_link_name_;
+        std::string pole_link_name_;
         std::string states_topic_;
         std::string commands_topic_;
         ignition::transport::Node node_;
         ignition::transport::Node::Publisher states_pub_;
         ignition::msgs::Float_V states_msg_;
+        int model_id_;
+        int msg_len_;
 
-        std::vector<ignition::gazebo::Entity> model_entities_;      //can't use ignition::gazebo::Entity *model_entities_ptr_;
-        std::vector<ignition::gazebo::Entity> link_entities_cart_;
-        std::vector<ignition::gazebo::Entity> link_entities_pole_;
+        ignition::gazebo::Entity model_entity_;
+        ignition::gazebo::Entity cart_link_entity_;
+        ignition::gazebo::Entity pole_link_entity_;
 
-        std::vector<ignition::gazebo::Model> models_;
-        std::vector<ignition::gazebo::Link> links_cart_;
-        std::vector<ignition::gazebo::Link> links_pole_;
+        ignition::gazebo::Model model_;
+        ignition::gazebo::Link cart_link_;
+        ignition::gazebo::Link pole_link_;
 };
 
 }

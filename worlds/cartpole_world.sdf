@@ -144,9 +144,19 @@
     </model>
 
     <include>
-      <pose frame=''>0 0 0 0 0 0</pose>
+      <pose frame=''>0 0 1.5 0 0 0</pose>
       <name>cartpole</name>
       <uri>model://cartpole</uri>
+
+      <plugin name="ecl::GazeboCartpole" filename="libgazebo_cartpole.so">
+        <model_id>0</model_id>
+        <model_name>cartpole</model_name>
+        <link_name_cart>cart</link_name_cart>
+        <link_name_pole>pole</link_name_pole>
+        <states_topic>/model/cartpole/states</states_topic>
+        <commands_topic>/model/cartpole/commands</commands_topic>
+        <message_length>30</message_length>
+      </plugin>
     </include>
     
     
