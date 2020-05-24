@@ -1,25 +1,23 @@
 import numpy as np
 
 # ----------------------- Stability Analysis -----------------------
-
+def pole(A: np.ndarray):
+    value, vector = np.linalg.eig(A)
+    return value
 
 # ----------------------- Matrix Computations -----------------------
 def ctrb(A: np.ndarray, B: np.ndarray) -> np.ndarray:       # Controllability matrix
     n = A.shape[0]
-
     ctrb_matrix = B
     for i in range(1,n):
         ctrb_matrix = np.hstack( [ctrb_matrix, np.dot( np.linalg.matrix_power(A,i), B) ] )
-    
     return ctrb_matrix
 
 def obsv(A: np.ndarray, C: np.ndarray) -> np.ndarray:       # Observability matrix
     n = A.shape[0]
-
     obsv_matrix = C
     for i in range(1,n):
         obsv_matrix = np.vstack( [obsv_matrix, np.dot( C, np.linalg.matrix_power(A,i) ) ] )
-    
     # obsv_matrix = ctrb(A.T, C.T).T          # Duality of ctrb and obsv
     return obsv_matrix
 
@@ -39,3 +37,4 @@ if __name__ == "__main__":
 
     ctrb_matrix = ctrb(A,B)
     obsv_matrix = obsv(A,C)
+    pole(A)
