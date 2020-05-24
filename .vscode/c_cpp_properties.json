@@ -1,0 +1,30 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/usr/include/ignition/cmake2",
+                "/usr/include/ignition/common3",
+                "/usr/include/ignition/fuel_tools4",
+                "/usr/include/ignition/gazebo3",
+                "/usr/include/ignition/gui3",
+                "/usr/include/ignition/launch2",
+                "/usr/include/ignition/math6",
+                "/usr/include/ignition/msgs5",
+                "/usr/include/ignition/physics2",
+                "/usr/include/ignition/plugin1",
+                "/usr/include/ignition/rendering3",
+                "/usr/include/ignition/sensors3",
+                "/usr/include/ignition/transport8",
+                "/usr/include/sdformat-9.1"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "clang-x64"
+        }
+    ],
+    "version": 4
+}
