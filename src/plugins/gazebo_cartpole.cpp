@@ -70,7 +70,7 @@ void GazeboCartpole::PreUpdate(const ignition::gazebo::UpdateInfo &_info,
                 ignition::gazebo::EntityComponentManager &_ecm)
 {
     
-    cart_link_.AddWorldForce(_ecm, ignition::math::Vector3d(-0.1,0,0));     // make sure the required components are added first, what components are required can be looked into the function
+    cart_link_.AddWorldForce(_ecm, ignition::math::Vector3d(command_force_,0,0));     // make sure the required components are added first, what components are required can be looked into the function
 
 }
 
@@ -111,13 +111,16 @@ void GazeboCartpole::PostUpdate(const ignition::gazebo::UpdateInfo &_info,
 void GazeboCartpole::CommandTopicCB(const ignition::msgs::Float_V &_msg)
 {
     auto data = _msg.data();
-    float force[3] = {data.Get(4), data.Get(6), data.Get(8)};
+    int id = data.Get(0);
+    int type = data.Get(1);
+    float t = data.Get(2);
+    command_force_ = data.Get(3);
 
-    for(int k=0; k<9; k++)
+    /*for(int k=0; k<msg_len_; k++)
     {
         std::cout<<data.Get(k)<<" ";
     }
-    std::cout<<std::endl;
+    std::cout<<std::endl;*/
 }
 
 }

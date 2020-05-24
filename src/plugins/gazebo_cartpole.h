@@ -56,6 +56,8 @@ class GazeboCartpole:
         ignition::gazebo::Model model_;
         ignition::gazebo::Link cart_link_;
         ignition::gazebo::Link pole_link_;
+
+        float command_force_ = 0;
 };
 
 }
