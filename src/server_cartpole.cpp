@@ -96,7 +96,7 @@ int main()
     while(1)
     {
         server.recvFromRL();
-        std::cout<<"Received data"<<std::endl;
+        //std::cout<<"Received data"<<std::endl;
         
         server.sendCommands();
     }
