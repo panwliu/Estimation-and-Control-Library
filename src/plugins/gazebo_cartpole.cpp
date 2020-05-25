@@ -115,6 +115,7 @@ void GazeboCartpole::CommandTopicCB(const ignition::msgs::Float_V &_msg)
     int type = data.Get(1);
     float t = data.Get(2);
     command_force_ = data.Get(3);
+    //std::cout<<command_force_<<std::endl;
 
     /*for(int k=0; k<msg_len_; k++)
     {
