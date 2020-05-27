@@ -11,7 +11,7 @@ class CartpoleDynamics(BaseDynamics):
     def dynamic_model(self, x: np.ndarray, u: np.ndarray) -> np.ndarray:
         m1, m2, l, g = self.m1, self.m2, self.l, 9.8
 
-        px, theta, vx, theta_d = x
+        px, theta, vx, theta_d = x[:,0]
 
         H_inv = np.array([ [1/(m1+m2-m2*np.cos(theta)**2), -m2*np.cos(theta)/(m1+m2-m2*np.cos(theta)**2)],
             [-np.cos(theta)/(m1*l+m2*l-m2*l*np.cos(theta)**2), (m1+m2)/(m1*l+m2*l-m2*l*np.cos(theta)**2)] ])
@@ -20,8 +20,8 @@ class CartpoleDynamics(BaseDynamics):
         B = np.array([ [1], [0] ])
 
         x_dot = np.zeros(shape=(4,1))
-        x_dot[0:2] = x[2:4]
-        x_dot[2:4] = np.dot( H_inv, -np.dot(C, x[2:4])-G+np.dot(B,u) )
+        x_dot[0:2,0] = x[2:4,0]
+        x_dot[2:4,0] = np.dot( H_inv, -np.dot(C, x[2:4,0].reshape((-1,1)))-G+np.dot(B,u) )[:,0]
 
         return x_dot
 

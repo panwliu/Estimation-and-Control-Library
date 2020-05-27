@@ -32,8 +32,8 @@ class CartpoleEnv:
 
         data, addr_remote_ = self.fd_.recvfrom(4*self.msg_len_)     # 1 float = 4 bytes, recvfrom is blocking
         unpacked_data = struct.unpack('30f',data)
-        model_id,data_type,time,px,vx,theta,omega = unpacked_data[0:7]
-        self.state_current_ = np.array([model_id,data_type,time,px,vx,theta,omega])
+        model_id,data_type,time,px,theta,vx,omega = unpacked_data[0:7]
+        self.state_current_ = np.array([model_id,data_type,time,px,theta,vx,omega])
 
         return self.state_current_
 

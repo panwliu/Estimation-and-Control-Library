@@ -97,9 +97,9 @@ void GazeboCartpole::PostUpdate(const ignition::gazebo::UpdateInfo &_info,
     //std::cout<<"Velocity2 is "<<"["<<vel2->Data()<<"]"<<std::endl;
     std::cout<<"sim time is     "<<_info.simTime.count()/1e9<<std::endl;*/
     
-    states_msg_.add_data(position.X()); // x position
-    states_msg_.add_data(vel->X());     // x velocity
+    states_msg_.add_data(position.X()); // x 
     states_msg_.add_data(euler.Y());    // pitch angle
+    states_msg_.add_data(vel->X());     // x velocity
     states_msg_.add_data(omega->Y());   // pitch rate
     
     for (int j=0; j<msg_len_-7; j++)
