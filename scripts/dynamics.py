@@ -5,8 +5,9 @@ class BaseDynamics:
         pass
 
 class CartpoleDynamics(BaseDynamics):
-    def __init__(self, m_c, m_p, l):
+    def __init__(self, m_c, m_p, l, wn_sigma=np.zeros((4,1))):
         self.m1, self.m2, self.l, self.g = m_c, m_p, l, 9.8
+        self.wn_sigma = wn_sigma.reshape((-1,1))
 
     def dynamic_model(self, x: np.ndarray, u: np.ndarray) -> np.ndarray:
         m1, m2, l, g = self.m1, self.m2, self.l, 9.8
@@ -23,10 +24,12 @@ class CartpoleDynamics(BaseDynamics):
         x_dot[0:2,0] = x[2:4,0]
         x_dot[2:4,0] = np.dot( H_inv, -np.dot(C, x[2:4,0].reshape((-1,1)))-G+np.dot(B,u) )[:,0]
 
+        # x_dot += self.wn_sigma*np.random.randn(4,1)
+
         return x_dot
 
     def next_state(self, x0, u, dt):
-        return x0 + self.dynamic_model(x0,u)*dt
+        return x0 + self.dynamic_model(x0,u)*dt + self.wn_sigma*np.random.randn(4,1)    # where to add wn affects Q
 
     def rk4(self, ode, x0: np.ndarray, dt, n_step, u) -> np.ndarray:
         n_var = np.size(x0)

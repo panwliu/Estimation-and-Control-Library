@@ -1,24 +1,30 @@
 import numpy as np
 import time
 from cartpole_env import CartpoleEnv
-from estimators import UnscentedKalmanFilter
 from dynamics import CartpoleDynamics
+from estimators import UnscentedKalmanFilter
 import matplotlib.pyplot as plt
 
 env = CartpoleEnv(port_self=18060, port_remote=18080)
 print("Environment done")
 
-dynamics = CartpoleDynamics(m_c = 1, m_p=0.5, l=1)
-estimator = UnscentedKalmanFilter(dynamics=dynamics, x0=np.zeros((4,1)))
+wn_sigma = np.array([1, 1, 2, 2])*1e-3
+dynamics = CartpoleDynamics(m_c = 1, m_p=0.5, l=1, wn_sigma=wn_sigma)
+H = np.array([1,0,0,0]).reshape((1,-1))     # measuring position makes the system observable
+Q = np.diag(wn_sigma**2)
+vn_sigma = 1e-2
+R = vn_sigma**2
+estimator = UnscentedKalmanFilter(dynamics=dynamics, x0=np.zeros((4,1)), H=H, Q=Q, R=R)
 
-n_step = 2000
+n_step = 1500
 time = np.zeros(n_step)
 states_real = np.zeros((4,n_step))
 states_estimated = np.zeros((4,n_step))
 for k_step in range(n_step):
     action = 0.1 if k_step%500<250 else -0.1
     state_real = env.step(action)
-    state_estimated = estimator.estimate(u=action, y=0)
+    y = state_real[3] + vn_sigma*np.random.randn(1)[0]
+    state_estimated = estimator.estimate(u=action, y=y)
     
     time[k_step] = state_real[2]
     states_real[:,k_step] = state_real[3:]
