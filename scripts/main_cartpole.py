@@ -1,11 +1,11 @@
 import numpy as np
 import time
-from cartpole_env import CartpoleEnv
+from envs import env_by_name
 from dynamics import CartpoleDynamics
 from estimators import UnscentedKalmanFilter
 import matplotlib.pyplot as plt
 
-env = CartpoleEnv(port_self=18060, port_remote=18080)
+env = env_by_name(env_name="CartPole-v1")
 print("Environment done")
 
 wn_sigma = np.array([1, 1, 2, 2])*1e-3
@@ -22,7 +22,7 @@ states_real = np.zeros((4,n_step))
 states_estimated = np.zeros((4,n_step))
 for k_step in range(n_step):
     action = 0.1 if k_step%500<250 else -0.1
-    state_real = env.step(action)
+    state_real, _, _ = env.step(action)
     y = state_real[3] + vn_sigma*np.random.randn(1)[0]
     state_estimated = estimator.estimate(u=action, y=y)
     

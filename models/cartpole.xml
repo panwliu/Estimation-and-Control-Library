@@ -1,0 +1,38 @@
+<mujoco model="cartpole">
+
+    <!-- set options for the built-in parser and compiler -->
+    <compiler inertiafromgeom="auto" angle="radian"/>
+
+    <!-- one-to-one correspondence with the low level structure mjOption contained in the field mjModel.opt of mjModel -->
+    <option timestep="0.005" iterations="50" tolerance="1e-10" solver="Newton" jacobian="dense" cone="pyramidal"/>
+
+    <!-- created in the model so that they can be referenced from other model elements -->
+    <asset>
+        <texture name="texplane" type="2d" builtin="checker" rgb1=".2 .3 .4" rgb2=".1 0.15 0.2" width="512" height="512" mark="cross" markrgb=".8 .8 .8"/>  
+
+        <material name="matplane" reflectance="0.3" texture="texplane" texrepeat="1 1" texuniform="true"/>
+    </asset>
+
+    <!-- construct the kinematic tree via nesting -->
+    <worldbody>
+        <light directional="false" diffuse=".2 .2 .2" specular="0 0 0" pos="0 0 5" dir="0 0 -1" castshadow="false"/>
+        <geom name="floor" type="plane" pos="0 0 0" size="0 0 .25"  material="matplane" condim="3"/>
+
+        <body name="cart" pos="0 0 0.01">
+            <geom name="cart_geom" type="box" size="0.3 0.1 0.01" />
+            <joint name="cart_joint" type="slide" axis="1 0 0"/>
+
+            <body name="pole" pos="0 0 0.42">
+                <geom name="pole_geom" type="capsule" size="0.02 0.35" />
+                <joint name="pole_joint" type="hinge" axis="0 1 0" pos="0 0  -0.4" />
+            </body>
+        </body>
+
+    </worldbody>
+
+    <!-- actuator definitions -->
+    <actuator>
+        <motor name="cart_motor" gear="10" joint="cart_joint" />
+    </actuator>
+
+</mujoco>
