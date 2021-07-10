@@ -20,10 +20,12 @@
 
         <body name="cart" pos="0 0 0.01">
             <geom name="cart_geom" type="box" size="0.3 0.1 0.01" />
+            <inertial pos='0 0 0' mass='1.0' diaginertia ='1.0 1.0 1.0'/>
             <joint name="cart_joint" type="slide" axis="1 0 0"/>
 
             <body name="pole" pos="0 0 0.42">
                 <geom name="pole_geom" type="capsule" size="0.02 0.35" />
+                <inertial pos='0 0 0' mass='1.0' diaginertia ='1.0 1.0 .1'/>
                 <joint name="pole_joint" type="hinge" axis="0 1 0" pos="0 0  -0.4" />
             </body>
         </body>

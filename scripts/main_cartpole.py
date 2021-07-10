@@ -3,6 +3,7 @@ import time
 from envs import env_by_name
 from dynamics import CartpoleDynamics
 from estimators import UnscentedKalmanFilter
+from controllers import lqr
 import matplotlib.pyplot as plt
 
 env = env_by_name(env_name="CartPole-v1")
@@ -16,18 +17,28 @@ vn_sigma = 1e-2
 R = vn_sigma**2
 estimator = UnscentedKalmanFilter(dynamics=dynamics, x0=np.zeros((4,1)), H=H, Q=Q, R=R)
 
+A = np.matrix([[0,0,1,0],[0,0,0,1], [0,-9.8,0,0],[0,2.0/0.7*9.8,0,0]])
+B = np.matrix([[0],[0],[1],[-1.0/0.7]])
+Q = np.matrix([[1,0,0,0],[0,10,0,0],[0,0,1,0],[0,0,0,100]])
+R = np.matrix([.001])
+K = lqr(A,B,Q,R)
+
 n_step = 1500
-time = np.zeros(n_step)
+time = np.arange(n_step)*0.005*env.simrate
 states_real = np.zeros((4,n_step))
 states_estimated = np.zeros((4,n_step))
+state_real = env.reset()
 for k_step in range(n_step):
+    env.render()
     action = 0.1 if k_step%500<250 else -0.1
+    action = 8*state_real[1] + 0.5*state_real[3]        # PD control
+    action = -K*np.matrix(state_real).T                 # LQR control
+    action=action[0,0]
     state_real, _, _ = env.step(action)
-    y = state_real[3] + vn_sigma*np.random.randn(1)[0]
+    y = state_real[0] + vn_sigma*np.random.randn(1)[0]
     state_estimated = estimator.estimate(u=action, y=y)
     
-    time[k_step] = state_real[2]
-    states_real[:,k_step] = state_real[3:]
+    states_real[:,k_step] = state_real[:]
     states_estimated[:,k_step] = state_estimated[:,0]
 
 plt.figure()
